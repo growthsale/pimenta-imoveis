@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- neutros ---- */
+  --color-shark:       #1d1d1f;
+  --color-shark-900:   #151517;
+  --color-shark-500:   #86868b;
+  --color-shark-300:   #d2d2d7;
+  --color-shark-100:   #e8e8ed;
+  --color-shark-50:    #f5f5f7;
+  --color-surface:     #ffffff;
+
+  /* ---- marca Pimenta ----
+     amarelo extraido do logo oficial (public/images/brand/pimenta-logo.png).
+     brand:     14.8:1 sobre shark — so sobre fundo escuro (1.1:1 sobre branco)
+     brand-600: tom grafico para hover e filetes sobre fundo escuro
+     brand-ink: mesmo matiz rebaixado, 4.8:1 sobre branco — texto/detalhe no claro */
+  --color-brand:        #fdf701;
+  --color-brand-600:    #d4ce00;
+  --color-brand-ink:    #7a7500;
+
+  --color-whatsapp: #25d366;
+  --color-error:    #ff3b30;
+
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  --font-sans:  var(--font-inter), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --radius-card: 16px;
+  --radius-ui:   8px;
+
+  --shadow-idle:  0 1px 3px #0000000d;
+  --shadow-hover: 0 20px 40px -12px #1d1d1f1f;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* impede que qualquer overflow pontual vire scroll lateral no celular.
+       clip (e nao hidden) preserva position: sticky/fixed dos filhos */
+    overflow-x: clip;
+  }
+  body {
+    background: var(--color-surface);
+    color: var(--color-shark);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* o foco herda a cor do contexto: escuro sobre o claro, claro sobre o escuro */
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+  /* evita o zoom automatico do iOS ao focar um campo */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  img,
+  svg,
+  video {
+    max-width: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      transition-duration: .01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ---- grid ----
+     substitui o `container` do Tailwind, cujo max-width acompanha o breakpoint
+     e zera a calha lateral exatamente em 768/1024/1280px. Aqui a margem nunca
+     colapsa e header, secoes e rodape ficam alinhados na mesma coluna. */
+  .ds-container {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 768px) {
+    .ds-container { padding-inline: 32px; }
+  }
+  @media (min-width: 1280px) {
+    .ds-container { padding-inline: 40px; }
+  }
+
+  /* ---- tipografia ---- */
+  .ds-h1 {
+    font-family: var(--font-serif);
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .ds-h2 {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .ds-h3 {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .ds-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-shark);
+  }
+  .ds-tech {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-shark-500);
+  }
+  .ds-price {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-shark);
+  }
+
+  @media (min-width: 640px) {
+    .ds-h1 { font-size: 56px; }
+    .ds-h2 { font-size: 38px; }
+    .ds-price { font-size: 20px; }
+  }
+  @media (min-width: 768px) {
+    .ds-h1 { font-size: 72px; }
+    .ds-h2 { font-size: 48px; }
+  }
+
+  /* filete que abre os titulos de secao — dois tempos, com o amarelo da marca */
+  .ds-rule {
+    display: block;
+    width: 40px;
+    height: 3px;
+    flex: none;
+    background: linear-gradient(
+      to right,
+      var(--color-brand-ink) 0 14px,
+      var(--color-shark) 14px 100%
+    );
+  }
+
+  /* ---- superficies ---- */
+  .ds-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-shark-100);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-idle);
+    transition: transform .25s, box-shadow .25s;
+  }
+  /* a elevacao no hover so faz sentido onde existe cursor */
+  @media (hover: hover) {
+    .ds-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+  }
+
+  .ds-tag-code {
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 8px;
+    padding-block: 4px;
+    background: var(--color-shark-50);
+    color: var(--color-shark-500);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  /* ---- controles ---- */
+  .ds-input {
+    height: 48px;
+    width: 100%;
+    min-width: 0;
+    padding-inline: 16px;
+    background: var(--color-shark-50);
+    border: 1px solid transparent;
+    border-radius: var(--radius-ui);
+    outline: none;
+    transition: background .2s, border-color .2s;
+  }
+  .ds-input:focus-visible {
+    background: var(--color-surface);
+    border-color: var(--color-shark-300);
+  }
+
+  .ds-btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding-inline: 16px;
+    background: var(--color-shark);
+    color: #fff;
+    border-radius: var(--radius-ui);
+    box-shadow: var(--shadow-idle);
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s, background .2s;
+  }
+  .ds-btn-primary:hover {
+    background: var(--color-shark-900);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .ds-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding-inline: 16px;
+    color: var(--color-shark);
+    background: transparent;
+    border: 1px solid var(--color-shark-100);
+    border-radius: var(--radius-ui);
+    transition: background .2s, border-color .2s;
+  }
+  .ds-btn-secondary:hover {
+    background: var(--color-shark-50);
+    border-color: var(--color-shark-300);
+  }
+
+  /* ---- hero ---- */
+  .ds-hero {
+    position: relative;
+    width: 100%;
+    /* svh = altura visivel real do celular. Com 100vh a barra de endereco do
+       Safari/Chrome mobile corta o rodape do hero e o layout "pula" no scroll */
+    height: 100vh;
+    height: 100svh;
+    min-height: 540px;
+    background: #000;
+    overflow: hidden;
+  }
+  .ds-hero-media { position: absolute; inset: 0; overflow: hidden; }
+  .ds-hero-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ds-hero-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, .66) 0%,
+      rgba(0, 0, 0, .38) 35%,
+      rgba(0, 0, 0, .40) 62%,
+      rgba(0, 0, 0, .52) 100%
+    );
+  }
+
+  /* titulo do hero — valores do .header-title do Jardins, com um degrau extra
+     para telas estreitas, onde 35px estourava a caixa de 18ch */
+  .hero-title {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 88px;
+    font-family: var(--font-serif);
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 1.06;
+    letter-spacing: -0.25px;
+    word-spacing: 0.05em;
+    text-align: center;
+    text-wrap: balance;
+    color: #fff;
+    white-space: pre-wrap;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, .45);
+  }
+  @media (min-width: 400px) {
+    .hero-title { font-size: 35px; min-height: 100px; }
+  }
+  @media (min-width: 768px) {
+    .hero-title { font-size: 56px; line-height: 1.05; }
+  }
+  @media (min-width: 1280px) {
+    .hero-title { font-size: 64px; }
+  }
+}

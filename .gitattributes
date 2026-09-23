@@ -1,0 +1,8 @@
+# normaliza fim de linha entre Windows/macOS/Linux
+* text=auto eol=lf
+
+# binarios ficam intocados
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.ico binary
