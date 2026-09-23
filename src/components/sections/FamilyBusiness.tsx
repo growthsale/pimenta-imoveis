@@ -1,6 +1,7 @@
 import Image from "next/image";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import { family } from "@/data/family";
+import { asset } from "@/lib/asset";
 
 /**
  * Family Business do Coelho da Fonseca, adaptada de 3 para 4 membros.
@@ -34,7 +35,7 @@ export default function FamilyBusiness() {
                 {/* o retrato acompanha a coluna em vez de ter lado fixo, para caber em telas de 320px */}
                 <div className="relative aspect-square w-full max-w-[208px] overflow-hidden rounded-full bg-shark-50 ring-0 transition group-hover:ring-2 group-hover:ring-brand-ink/30 lg:max-w-[224px]">
                   <Image
-                    src={membro.foto}
+                    src={asset(membro.foto)}
                     alt={`${membro.nome}, ${membro.cargo} da Pimenta Imóveis`}
                     fill
                     sizes="(min-width: 1024px) 224px, (min-width: 640px) 208px, 42vw"

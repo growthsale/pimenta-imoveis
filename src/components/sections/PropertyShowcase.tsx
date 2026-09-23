@@ -6,6 +6,7 @@ import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import { properties } from "@/data/properties";
+import { asset } from "@/lib/asset";
 
 /**
  * Carrossel de destaques no padrão do Coelho: ds-card com foto vertical,
@@ -91,7 +92,7 @@ export default function PropertyShowcase() {
               <div className="relative aspect-[3/4] overflow-hidden md:aspect-[4/5]">
                 {imovel.foto ? (
                   <Image
-                    src={imovel.foto}
+                    src={asset(imovel.foto)}
                     alt={`${imovel.titulo} no ${imovel.bairro}`}
                     fill
                     sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 78vw"

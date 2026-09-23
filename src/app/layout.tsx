@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { asset } from "@/lib/asset";
 import "./globals.css";
 
 const inter = Inter({
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     images: [
       {
-        url: "/images/brand/pimenta-logo.png",
+        url: asset("/images/brand/pimenta-logo.png"),
         width: 1080,
         height: 1080,
         alt: "Pimenta Imóveis",

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import HeroVideo from "./HeroVideo";
 import HeroSearch from "./HeroSearch";
+import { asset } from "@/lib/asset";
 
 /**
  * Hero do Jardins & Co (.header-container + .header-title + .header-button)
@@ -12,7 +13,7 @@ import HeroSearch from "./HeroSearch";
 export default function Hero() {
   return (
     <section className="ds-hero">
-      <HeroVideo src="/video/hero-motion.mp4" />
+      <HeroVideo src={asset("/video/hero-motion.mp4")} />
 
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-5 pt-16 pb-[max(20px,env(safe-area-inset-bottom))] md:pt-20">
         <h1 className="hero-title max-w-[18ch]">
