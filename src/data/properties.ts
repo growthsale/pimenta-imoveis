@@ -1,24 +1,287 @@
-export type Property = {
-  id: string;
-  titulo: string;
-  bairro: string;
-  area: string;
-  dormitorios: number;
-  vagas: number;
-  preco: string;
-  codigo: string;
-  foto: string;
-  href: string;
-};
+import type { Property } from "@/types/property";
 
 /**
- * Placeholder até a integração com a base de imóveis.
- * O formato acompanha o card do Coelho: foto vertical, titulo, bairro, metragem e preço.
+ * Catalogo de demonstracao.
+ *
+ * Dados ficticios, no formato exato que a API do CRM devera devolver — quando a
+ * integracao existir, basta trocar a fonte em src/lib/search.ts; nenhuma tela
+ * precisa mudar.
+ *
+ * As fotos sao do Unsplash (licenca livre) e se repetem entre os anuncios.
  */
+
+const fotos = (...ids: number[]): string[] =>
+  ids.map((id) => `/images/properties/imovel-${String(id).padStart(2, "0")}.jpg`);
+
 export const properties: Property[] = [
-  { id: "1", titulo: "Cobertura Duplex",       bairro: "Centro",        area: "240 m²", dormitorios: 4, vagas: 3, preco: "R$ 2.450.000", codigo: "PI-1024", foto: "", href: "/imovel/pi-1024" },
-  { id: "2", titulo: "Apartamento Garden",     bairro: "Jardim Sul",    area: "180 m²", dormitorios: 3, vagas: 2, preco: "R$ 1.380.000", codigo: "PI-1087", foto: "", href: "/imovel/pi-1087" },
-  { id: "3", titulo: "Casa em Condomínio",     bairro: "Alphaville",    area: "320 m²", dormitorios: 4, vagas: 4, preco: "R$ 3.100.000", codigo: "PI-1155", foto: "", href: "/imovel/pi-1155" },
-  { id: "4", titulo: "Apartamento Alto Padrão",bairro: "Vila Nova",     area: "145 m²", dormitorios: 3, vagas: 2, preco: "R$ 1.120.000", codigo: "PI-1203", foto: "", href: "/imovel/pi-1203" },
-  { id: "5", titulo: "Sobrado Moderno",        bairro: "Parque das Acácias", area: "210 m²", dormitorios: 3, vagas: 3, preco: "R$ 1.650.000", codigo: "PI-1288", foto: "", href: "/imovel/pi-1288" },
+  {
+    id: "1", codigo: "PI-1024", slug: "cobertura-duplex-higienopolis-pi-1024",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Cobertura Duplex",
+    endereco: { rua: "Rua Maranhão", bairro: "Higienópolis", cidade: "São Paulo", uf: "SP" },
+    area: 240, dormitorios: 4, suites: 2, banheiros: 4, vagas: 3,
+    preco: { venda: 2_450_000 }, condominio: 2_400, iptu: 780,
+    fotos: fotos(4, 6, 12), comodidades: ["elevador", "portaria24h", "varanda", "churrasqueira"],
+    publicadoEm: "2026-09-22", destaque: true,
+  },
+  {
+    id: "2", codigo: "PI-1087", slug: "apartamento-garden-vila-olimpia-pi-1087",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento Garden",
+    endereco: { rua: "Rua Casa do Ator", bairro: "Vila Olímpia", cidade: "São Paulo", uf: "SP" },
+    area: 180, dormitorios: 3, suites: 1, banheiros: 3, vagas: 2,
+    preco: { venda: 1_380_000 }, condominio: 1_900, iptu: 520,
+    fotos: fotos(8, 5, 10), comodidades: ["piscina", "academia", "elevador", "portaria24h"],
+    publicadoEm: "2026-09-19", destaque: true,
+  },
+  {
+    id: "3", codigo: "PI-1155", slug: "casa-condominio-alphaville-pi-1155",
+    tipo: "condominio", operacao: ["venda"], titulo: "Casa em Condomínio",
+    endereco: { rua: "Alameda Araguaia", bairro: "Alphaville", cidade: "Barueri", uf: "SP" },
+    area: 320, dormitorios: 4, suites: 3, banheiros: 5, vagas: 4,
+    preco: { venda: 3_100_000 }, condominio: 1_450, iptu: 980,
+    fotos: fotos(3, 14, 11), comodidades: ["piscina", "churrasqueira", "portaria24h", "petFriendly"],
+    publicadoEm: "2026-09-15", destaque: true,
+  },
+  {
+    id: "4", codigo: "PI-1203", slug: "apartamento-alto-padrao-perdizes-pi-1203",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento Alto Padrão",
+    endereco: { rua: "Rua Cardoso de Almeida", bairro: "Perdizes", cidade: "São Paulo", uf: "SP" },
+    area: 145, dormitorios: 3, suites: 1, banheiros: 3, vagas: 2,
+    preco: { venda: 1_120_000 }, condominio: 1_350, iptu: 410,
+    fotos: fotos(9, 2, 13), comodidades: ["elevador", "varanda", "salaoFestas", "proximoMetro"],
+    publicadoEm: "2026-09-11", destaque: true,
+  },
+  {
+    id: "5", codigo: "PI-1288", slug: "sobrado-moderno-alto-de-pinheiros-pi-1288",
+    tipo: "casa", operacao: ["venda"], titulo: "Sobrado Moderno",
+    endereco: { rua: "Rua Girassol", bairro: "Alto de Pinheiros", cidade: "São Paulo", uf: "SP" },
+    area: 210, dormitorios: 3, suites: 1, banheiros: 4, vagas: 3,
+    preco: { venda: 1_650_000 }, iptu: 640,
+    fotos: fotos(1, 7, 12), comodidades: ["churrasqueira", "petFriendly", "varanda"],
+    publicadoEm: "2026-09-08", destaque: true,
+  },
+  {
+    id: "6", codigo: "PI-1301", slug: "apartamento-pinheiros-pi-1301",
+    tipo: "apartamento", operacao: ["venda", "locacao"], titulo: "Apartamento reformado",
+    endereco: { rua: "Rua Artur de Azevedo", bairro: "Pinheiros", cidade: "São Paulo", uf: "SP" },
+    area: 68, dormitorios: 2, suites: 1, banheiros: 2, vagas: 1,
+    preco: { venda: 890_000, locacao: 4_200 }, condominio: 950, iptu: 240,
+    fotos: fotos(10, 8, 5), comodidades: ["elevador", "proximoMetro", "petFriendly", "arCondicionado"],
+    publicadoEm: "2026-09-24",
+  },
+  {
+    id: "7", codigo: "PI-1315", slug: "apartamento-itaim-bibi-pi-1315",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento com varanda gourmet",
+    endereco: { rua: "Rua João Cachoeira", bairro: "Itaim Bibi", cidade: "São Paulo", uf: "SP" },
+    area: 92, dormitorios: 2, suites: 1, banheiros: 2, vagas: 2,
+    preco: { venda: 1_480_000 }, condominio: 1_680, iptu: 590,
+    fotos: fotos(5, 4, 9), comodidades: ["piscina", "academia", "elevador", "varanda", "portaria24h"],
+    publicadoEm: "2026-09-17",
+  },
+  {
+    id: "8", codigo: "PI-1322", slug: "apartamento-moema-pi-1322",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento próximo ao parque",
+    endereco: { rua: "Alameda dos Arapanés", bairro: "Moema", cidade: "São Paulo", uf: "SP" },
+    area: 118, dormitorios: 3, suites: 1, banheiros: 3, vagas: 2,
+    preco: { venda: 1_290_000 }, condominio: 1_420, iptu: 480,
+    fotos: fotos(12, 3, 1), comodidades: ["elevador", "portaria24h", "salaoFestas", "proximoMetro"],
+    publicadoEm: "2026-08-30",
+  },
+  {
+    id: "9", codigo: "PI-1338", slug: "studio-vila-madalena-pi-1338",
+    tipo: "apartamento", operacao: ["locacao"], titulo: "Studio mobiliado",
+    endereco: { rua: "Rua Aspicuelta", bairro: "Vila Madalena", cidade: "São Paulo", uf: "SP" },
+    area: 38, dormitorios: 1, suites: 0, banheiros: 1, vagas: 0,
+    preco: { locacao: 3_100 }, condominio: 720, iptu: 130,
+    fotos: fotos(13, 10, 2), comodidades: ["mobiliado", "elevador", "proximoMetro", "coworking"],
+    publicadoEm: "2026-09-25",
+  },
+  {
+    id: "10", codigo: "PI-1344", slug: "apartamento-jardins-pi-1344",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento clássico",
+    endereco: { rua: "Alameda Lorena", bairro: "Jardins", cidade: "São Paulo", uf: "SP" },
+    area: 210, dormitorios: 4, suites: 2, banheiros: 4, vagas: 3,
+    preco: { venda: 4_200_000 }, condominio: 3_800, iptu: 1_450,
+    fotos: fotos(6, 11, 4), comodidades: ["elevador", "portaria24h", "varanda", "salaoFestas"],
+    publicadoEm: "2026-08-21",
+  },
+  {
+    id: "11", codigo: "PI-1350", slug: "conjunto-comercial-pinheiros-pi-1350",
+    tipo: "comercial", operacao: ["locacao"], titulo: "Conjunto comercial",
+    endereco: { rua: "Rua dos Pinheiros", bairro: "Pinheiros", cidade: "São Paulo", uf: "SP" },
+    area: 140, dormitorios: 0, suites: 0, banheiros: 2, vagas: 3,
+    preco: { locacao: 9_800 }, condominio: 2_100, iptu: 640,
+    fotos: fotos(7, 9, 13), comodidades: ["elevador", "portaria24h", "arCondicionado", "proximoMetro"],
+    publicadoEm: "2026-09-20",
+  },
+  {
+    id: "12", codigo: "PI-1357", slug: "laje-corporativa-itaim-bibi-pi-1357",
+    tipo: "comercial", operacao: ["locacao"], titulo: "Laje corporativa",
+    endereco: { rua: "Avenida Brigadeiro Faria Lima", bairro: "Itaim Bibi", cidade: "São Paulo", uf: "SP" },
+    area: 420, dormitorios: 0, suites: 0, banheiros: 4, vagas: 10,
+    preco: { locacao: 38_000 }, condominio: 6_900, iptu: 2_300,
+    fotos: fotos(9, 7, 3), comodidades: ["elevador", "portaria24h", "arCondicionado", "coworking"],
+    publicadoEm: "2026-09-05",
+  },
+  {
+    id: "13", codigo: "PI-1362", slug: "apartamento-brooklin-pi-1362",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento compacto",
+    endereco: { rua: "Rua Barão do Triunfo", bairro: "Brooklin", cidade: "São Paulo", uf: "SP" },
+    area: 74, dormitorios: 2, suites: 1, banheiros: 2, vagas: 1,
+    preco: { venda: 780_000 }, condominio: 890, iptu: 220,
+    fotos: fotos(2, 14, 8), comodidades: ["elevador", "academia", "petFriendly"],
+    publicadoEm: "2026-08-14",
+  },
+  {
+    id: "14", codigo: "PI-1370", slug: "casa-campo-belo-pi-1370",
+    tipo: "casa", operacao: ["venda"], titulo: "Casa térrea com quintal",
+    endereco: { rua: "Rua Otávio Tarquínio", bairro: "Campo Belo", cidade: "São Paulo", uf: "SP" },
+    area: 260, dormitorios: 4, suites: 2, banheiros: 4, vagas: 4,
+    preco: { venda: 2_180_000 }, iptu: 890,
+    fotos: fotos(14, 1, 12), comodidades: ["churrasqueira", "piscina", "petFriendly"],
+    publicadoEm: "2026-09-02",
+  },
+  {
+    id: "15", codigo: "PI-1378", slug: "apartamento-santana-pi-1378",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento próximo ao metrô",
+    endereco: { rua: "Rua Voluntários da Pátria", bairro: "Santana", cidade: "São Paulo", uf: "SP" },
+    area: 62, dormitorios: 2, suites: 0, banheiros: 1, vagas: 1,
+    preco: { venda: 520_000 }, condominio: 680, iptu: 160,
+    fotos: fotos(11, 5, 10), comodidades: ["elevador", "proximoMetro", "salaoFestas"],
+    publicadoEm: "2026-07-28",
+  },
+  {
+    id: "16", codigo: "PI-1385", slug: "apartamento-tatuape-pi-1385",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento com lazer completo",
+    endereco: { rua: "Rua Tuiuti", bairro: "Tatuapé", cidade: "São Paulo", uf: "SP" },
+    area: 85, dormitorios: 3, suites: 1, banheiros: 2, vagas: 2,
+    preco: { venda: 690_000 }, condominio: 820, iptu: 210,
+    fotos: fotos(3, 12, 6), comodidades: ["piscina", "academia", "salaoFestas", "churrasqueira", "proximoMetro"],
+    publicadoEm: "2026-09-13",
+  },
+  {
+    id: "17", codigo: "PI-1391", slug: "casa-condominio-granja-viana-pi-1391",
+    tipo: "condominio", operacao: ["venda"], titulo: "Casa em condomínio fechado",
+    endereco: { rua: "Estrada da Aldeinha", bairro: "Granja Viana", cidade: "Cotia", uf: "SP" },
+    area: 380, dormitorios: 4, suites: 3, banheiros: 5, vagas: 4,
+    preco: { venda: 2_750_000 }, condominio: 1_280, iptu: 760,
+    fotos: fotos(1, 14, 7), comodidades: ["piscina", "churrasqueira", "portaria24h", "petFriendly"],
+    publicadoEm: "2026-08-07",
+  },
+  {
+    id: "18", codigo: "PI-1398", slug: "apartamento-morumbi-pi-1398",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento com vista livre",
+    endereco: { rua: "Avenida Giovanni Gronchi", bairro: "Morumbi", cidade: "São Paulo", uf: "SP" },
+    area: 165, dormitorios: 3, suites: 2, banheiros: 4, vagas: 3,
+    preco: { venda: 1_590_000 }, condominio: 2_200, iptu: 640,
+    fotos: fotos(4, 10, 9), comodidades: ["piscina", "academia", "elevador", "portaria24h", "varanda"],
+    publicadoEm: "2026-08-25",
+  },
+  {
+    id: "19", codigo: "PI-1404", slug: "apartamento-vila-mariana-pi-1404",
+    tipo: "apartamento", operacao: ["venda", "locacao"], titulo: "Apartamento bem localizado",
+    endereco: { rua: "Rua Joaquim Távora", bairro: "Vila Mariana", cidade: "São Paulo", uf: "SP" },
+    area: 96, dormitorios: 3, suites: 1, banheiros: 2, vagas: 2,
+    preco: { venda: 980_000, locacao: 5_400 }, condominio: 1_100, iptu: 300,
+    fotos: fotos(8, 2, 11), comodidades: ["elevador", "proximoMetro", "salaoFestas", "petFriendly"],
+    publicadoEm: "2026-09-26",
+  },
+  {
+    id: "20", codigo: "PI-1412", slug: "studio-consolacao-pi-1412",
+    tipo: "apartamento", operacao: ["locacao"], titulo: "Studio compacto",
+    endereco: { rua: "Rua da Consolação", bairro: "Consolação", cidade: "São Paulo", uf: "SP" },
+    area: 32, dormitorios: 1, suites: 0, banheiros: 1, vagas: 0,
+    preco: { locacao: 2_650 }, condominio: 640, iptu: 110,
+    fotos: fotos(13, 5, 8), comodidades: ["mobiliado", "elevador", "proximoMetro", "coworking", "academia"],
+    publicadoEm: "2026-09-23",
+  },
+  {
+    id: "21", codigo: "PI-1419", slug: "sala-comercial-vila-olimpia-pi-1419",
+    tipo: "comercial", operacao: ["venda"], titulo: "Sala comercial",
+    endereco: { rua: "Rua Fiandeiras", bairro: "Vila Olímpia", cidade: "São Paulo", uf: "SP" },
+    area: 58, dormitorios: 0, suites: 0, banheiros: 1, vagas: 1,
+    preco: { venda: 890_000 }, condominio: 1_150, iptu: 380,
+    fotos: fotos(7, 13, 9), comodidades: ["elevador", "portaria24h", "arCondicionado"],
+    publicadoEm: "2026-07-19",
+  },
+  {
+    id: "22", codigo: "PI-1425", slug: "casa-butanta-pi-1425",
+    tipo: "casa", operacao: ["venda"], titulo: "Casa com edícula",
+    endereco: { rua: "Rua Alvarenga", bairro: "Butantã", cidade: "São Paulo", uf: "SP" },
+    area: 180, dormitorios: 3, suites: 1, banheiros: 3, vagas: 2,
+    preco: { venda: 1_150_000 }, iptu: 470,
+    fotos: fotos(1, 12, 14), comodidades: ["churrasqueira", "petFriendly", "proximoMetro"],
+    publicadoEm: "2026-08-02",
+  },
+  {
+    id: "23", codigo: "PI-1433", slug: "cobertura-pinheiros-pi-1433",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Cobertura com terraço",
+    endereco: { rua: "Rua Fradique Coutinho", bairro: "Pinheiros", cidade: "São Paulo", uf: "SP" },
+    area: 190, dormitorios: 3, suites: 2, banheiros: 4, vagas: 2,
+    preco: { venda: 2_890_000 }, condominio: 2_450, iptu: 920,
+    fotos: fotos(6, 4, 10), comodidades: ["elevador", "varanda", "churrasqueira", "proximoMetro", "portaria24h"],
+    publicadoEm: "2026-09-21",
+  },
+  {
+    id: "24", codigo: "PI-1440", slug: "apartamento-bela-vista-pi-1440",
+    tipo: "apartamento", operacao: ["locacao"], titulo: "Apartamento mobiliado",
+    endereco: { rua: "Rua Treze de Maio", bairro: "Bela Vista", cidade: "São Paulo", uf: "SP" },
+    area: 55, dormitorios: 1, suites: 1, banheiros: 1, vagas: 1,
+    preco: { locacao: 3_800 }, condominio: 780, iptu: 180,
+    fotos: fotos(5, 11, 2), comodidades: ["mobiliado", "elevador", "proximoMetro", "arCondicionado"],
+    publicadoEm: "2026-09-18",
+  },
+  {
+    id: "25", codigo: "PI-1447", slug: "terreno-granja-viana-pi-1447",
+    tipo: "terreno", operacao: ["venda"], titulo: "Terreno em condomínio",
+    endereco: { bairro: "Granja Viana", cidade: "Cotia", uf: "SP" },
+    area: 1_000, dormitorios: 0, suites: 0, banheiros: 0, vagas: 0,
+    preco: { venda: 1_350_000 }, iptu: 520,
+    fotos: fotos(14, 3, 1), comodidades: ["portaria24h"],
+    publicadoEm: "2026-06-30",
+  },
+  {
+    id: "26", codigo: "PI-1454", slug: "apartamento-jardim-paulista-pi-1454",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento reformado",
+    endereco: { rua: "Rua Estados Unidos", bairro: "Jardim Paulista", cidade: "São Paulo", uf: "SP" },
+    area: 130, dormitorios: 3, suites: 1, banheiros: 3, vagas: 2,
+    preco: { venda: 1_720_000 }, condominio: 1_850, iptu: 610,
+    fotos: fotos(9, 6, 12), comodidades: ["elevador", "portaria24h", "varanda", "proximoMetro"],
+    publicadoEm: "2026-08-18",
+  },
+  {
+    id: "27", codigo: "PI-1461", slug: "casa-vila-madalena-pi-1461",
+    tipo: "casa", operacao: ["venda"], titulo: "Casa de vila",
+    endereco: { rua: "Rua Harmonia", bairro: "Vila Madalena", cidade: "São Paulo", uf: "SP" },
+    area: 145, dormitorios: 3, suites: 1, banheiros: 3, vagas: 2,
+    preco: { venda: 1_980_000 }, iptu: 680,
+    fotos: fotos(12, 1, 8), comodidades: ["churrasqueira", "varanda", "petFriendly", "proximoMetro"],
+    publicadoEm: "2026-09-10",
+  },
+  {
+    id: "28", codigo: "PI-1468", slug: "apartamento-paraiso-pi-1468",
+    tipo: "apartamento", operacao: ["venda", "locacao"], titulo: "Apartamento com varanda",
+    endereco: { rua: "Rua Tutóia", bairro: "Paraíso", cidade: "São Paulo", uf: "SP" },
+    area: 78, dormitorios: 2, suites: 1, banheiros: 2, vagas: 1,
+    preco: { venda: 950_000, locacao: 4_900 }, condominio: 1_050, iptu: 280,
+    fotos: fotos(10, 13, 4), comodidades: ["elevador", "varanda", "proximoMetro", "academia"],
+    publicadoEm: "2026-09-16",
+  },
+  {
+    id: "29", codigo: "PI-1475", slug: "predio-comercial-centro-pi-1475",
+    tipo: "comercial", operacao: ["venda"], titulo: "Prédio comercial",
+    endereco: { rua: "Rua Líbero Badaró", bairro: "Centro", cidade: "São Paulo", uf: "SP" },
+    area: 860, dormitorios: 0, suites: 0, banheiros: 8, vagas: 6,
+    preco: { venda: 5_400_000 }, iptu: 3_100,
+    fotos: fotos(7, 9, 11), comodidades: ["elevador", "portaria24h", "proximoMetro"],
+    publicadoEm: "2026-07-05",
+  },
+  {
+    id: "30", codigo: "PI-1482", slug: "apartamento-ipiranga-pi-1482",
+    tipo: "apartamento", operacao: ["venda"], titulo: "Apartamento primeira moradia",
+    endereco: { rua: "Rua Silva Bueno", bairro: "Ipiranga", cidade: "São Paulo", uf: "SP" },
+    area: 70, dormitorios: 2, suites: 0, banheiros: 2, vagas: 1,
+    preco: { venda: 580_000 }, condominio: 740, iptu: 190,
+    fotos: fotos(2, 8, 5), comodidades: ["elevador", "salaoFestas", "churrasqueira"],
+    publicadoEm: "2026-08-11",
+  },
 ];

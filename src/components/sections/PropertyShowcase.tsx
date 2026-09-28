@@ -2,17 +2,19 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import SectionWrapper from "@/components/ui/SectionWrapper";
-import { properties } from "@/data/properties";
-import { asset } from "@/lib/asset";
+import PropertyCard from "@/components/property/PropertyCard";
+import { badgesDe } from "@/lib/badges";
+import type { Property } from "@/types/property";
+
+type Props = { imoveis: Property[] };
 
 /**
- * Carrossel de destaques no padrão do Coelho: ds-card com foto vertical,
- * gradiente inferior e dados do imóvel sobre a imagem.
+ * Carrossel de destaques. Os cards sao os mesmos da busca (PropertyCard), com o
+ * carrossel de fotos desligado para nao disputar o arrasto com o embla.
  */
-export default function PropertyShowcase() {
+export default function PropertyShowcase({ imoveis }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: false,
@@ -83,55 +85,28 @@ export default function PropertyShowcase() {
 
       <div className="mt-8 overflow-hidden md:mt-10" ref={emblaRef}>
         <div className="flex gap-4 md:gap-5">
-          {properties.map((imovel) => (
-            <Link
+          {imoveis.map((imovel, i) => (
+            <div
               key={imovel.id}
-              href={imovel.href}
-              className="ds-card group block w-[82%] max-w-[380px] shrink-0 overflow-hidden sm:w-[47%] lg:w-[31%]"
+              className="w-[82%] max-w-[380px] shrink-0 sm:w-[47%] lg:w-[31%]"
             >
-              <div className="relative aspect-[3/4] overflow-hidden md:aspect-[4/5]">
-                {imovel.foto ? (
-                  <Image
-                    src={asset(imovel.foto)}
-                    alt={`${imovel.titulo} no ${imovel.bairro}`}
-                    fill
-                    sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 78vw"
-                    className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-shark-100 to-shark-300" />
-                )}
-
-                <div
-                  className="absolute inset-x-0 bottom-0 p-4 text-white md:p-5"
-                  style={{
-                    background:
-                      "linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0.0))",
-                  }}
-                >
-                  <div className="font-serif text-[22px] font-medium leading-tight md:text-[24px]">
-                    {imovel.titulo}
-                  </div>
-                  <div className="mt-2 flex min-w-0 items-center gap-2 font-sans text-[13px] text-white/85">
-                    <span className="truncate">{imovel.bairro}</span>
-                    <span aria-hidden="true">·</span>
-                    <span className="shrink-0">{imovel.area}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 p-4 md:p-5">
-                <div className="min-w-0">
-                  <div className="ds-price">{imovel.preco}</div>
-                  <div className="ds-tech mt-1">
-                    {imovel.dormitorios} dorm · {imovel.vagas} vagas
-                  </div>
-                </div>
-                <span className="ds-tag-code shrink-0">{imovel.codigo}</span>
-              </div>
-            </Link>
+              <PropertyCard
+                imovel={imovel}
+                operacao={imovel.operacao[0]}
+                badges={badgesDe(imovel, imovel.operacao[0], imoveis)}
+                carrossel={false}
+                prioridade={i < 2}
+                sizes="(min-width: 1024px) 31vw, (min-width: 640px) 47vw, 82vw"
+              />
+            </div>
           ))}
         </div>
+      </div>
+
+      <div className="mt-8 flex justify-center">
+        <Link href="/busca" className="ds-btn-secondary px-6">
+          Ver todos os imóveis
+        </Link>
       </div>
     </SectionWrapper>
   );
