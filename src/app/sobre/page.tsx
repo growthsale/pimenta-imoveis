@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import { asset } from "@/lib/asset";
 import FamilyBusiness from "@/components/sections/FamilyBusiness";
 import Stats from "@/components/sections/Stats";
 import SectionWrapper from "@/components/ui/SectionWrapper";
@@ -75,6 +77,47 @@ export default function SobrePage() {
           </p>
         </div>
       </section>
+
+      <SectionWrapper className="bg-white">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-16">
+          {/* foto de acervo da familia — a moldura branca e do proprio papel */}
+          <figure className="mx-auto w-full max-w-[420px]">
+            <Image
+              src={asset("/images/historia/primeira-sede.jpg")}
+              alt="Fachada da primeira sede da Pimenta Imóveis, com a placa PIMENTA imóveis — compra, vende, administra — e um carro na garagem"
+              width={1236}
+              height={1600}
+              sizes="(min-width: 1024px) 420px, (min-width: 640px) 60vw, 90vw"
+              className="w-full rounded-[4px] shadow-[0_18px_40px_-16px_rgba(29,29,31,0.45)]"
+            />
+            <figcaption className="ds-tech mt-4">
+              A primeira sede, em foto do acervo da família.
+              {/* TODO: confirmar o ano e o endereço com a Pimenta */}
+            </figcaption>
+          </figure>
+
+          <div>
+            <p className="ds-label text-brand-ink">Onde tudo começou</p>
+
+            <h2 className="mt-5 font-serif text-[28px] font-normal leading-tight text-shark md:text-[38px]">
+              Um sobrado, uma placa e um telefone de sete dígitos
+            </h2>
+
+            <p className="mt-5 max-w-[58ch] text-[16px] leading-relaxed text-shark-500">
+              <span className="text-shark">Compra · Vende · Administra.</span> A placa já
+              dizia tudo o que a Pimenta faria pelas três décadas seguintes — e o
+              &ldquo;sede própria&rdquo; no canto direito era o orgulho de quem tinha acabado
+              de sair do aluguel.
+            </p>
+
+            <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed text-shark-500">
+              O escritório funcionava no andar de cima, o carro da empresa dormia na
+              garagem e a carteira inteira cabia em um fichário. O que mudou desde então
+              foi a escala; o jeito de atender continua o mesmo.
+            </p>
+          </div>
+        </div>
+      </SectionWrapper>
 
       <SectionWrapper>
         <SectionHeading
