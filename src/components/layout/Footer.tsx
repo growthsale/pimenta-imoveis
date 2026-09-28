@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BrandLogo from "@/components/brand/BrandLogo";
+import { contato, linkWhatsApp } from "@/data/contato";
 import { areaLinks, institutionalLinks } from "@/data/navigation";
 
 export default function Footer() {
@@ -60,18 +61,26 @@ export default function Footer() {
             <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-white/50">
               Contato
             </p>
-            {/* TODO: substituir pelos dados reais da Pimenta Imóveis */}
+            {/* TODO: dados reais em src/data/contato.ts */}
             <ul className="mt-4 space-y-2.5 text-[14px] text-white/80">
-              <li>Endereço a definir</li>
-              <li>Telefone a definir</li>
-              <li>E-mail a definir</li>
+              <li>{contato.endereco}</li>
+              <li>
+                <a href={linkWhatsApp()} target="_blank" rel="noopener noreferrer" className="transition hover:text-brand">
+                  WhatsApp {contato.whatsappExibicao}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${contato.email}`} className="transition hover:text-brand">
+                  {contato.email}
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-8 text-[13px] text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {ano} Pimenta Imóveis. Todos os direitos reservados.</p>
-          <p>CRECI a definir</p>
+          <p>{contato.creci}</p>
         </div>
       </div>
     </footer>

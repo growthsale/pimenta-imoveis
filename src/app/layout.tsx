@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import WhatsAppFab from "@/components/ui/WhatsAppFab";
 import { asset } from "@/lib/asset";
 import "./globals.css";
 
@@ -57,6 +58,7 @@ export default function RootLayout({
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
+        <WhatsAppFab />
       </body>
     </html>
   );

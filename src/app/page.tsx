@@ -1,6 +1,8 @@
 import Hero from "@/components/hero/Hero";
 import PropertyShowcase from "@/components/sections/PropertyShowcase";
+import Differentials from "@/components/sections/Differentials";
 import FamilyBusiness from "@/components/sections/FamilyBusiness";
+import BusinessTeaser from "@/components/sections/BusinessTeaser";
 import Stats from "@/components/sections/Stats";
 import Newsletter from "@/components/sections/Newsletter";
 import { destaques } from "@/lib/search";
@@ -13,8 +15,10 @@ export default async function Home() {
     <>
       <Hero />
       <PropertyShowcase imoveis={imoveis} />
+      <Differentials />
       <FamilyBusiness />
       <Stats />
+      <BusinessTeaser />
       <Newsletter />
     </>
   );
