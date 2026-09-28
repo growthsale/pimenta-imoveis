@@ -65,7 +65,7 @@ export default function SobrePage() {
         <div className="ds-container">
           <p className="ds-label">Sobre a Pimenta</p>
           <h1 className="mt-5 max-w-[20ch] font-serif text-[34px] font-normal leading-[1.08] text-shark md:text-[56px]">
-            Uma imobiliária que envelheceu junto com o bairro
+            Uma imobiliária que cresceu junto com o bairro
           </h1>
           {/* TODO: substituir pelo texto institucional real */}
           <p className="mt-6 max-w-[62ch] text-[16px] leading-relaxed text-shark-500 md:text-[18px]">

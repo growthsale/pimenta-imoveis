@@ -40,15 +40,15 @@ export default function EmBreve({ titulo, descricao }: Props) {
         </div>
 
         {/* TODO: dados reais em src/data/contato.ts */}
-        <dl className="mt-10 grid grid-cols-1 gap-4 border-t border-shark-100 pt-8 sm:grid-cols-3">
+        <dl className="mt-10 grid grid-cols-1 gap-x-8 gap-y-5 border-t border-shark-100 pt-8 sm:grid-cols-2">
           {[
             { rotulo: "Telefone", valor: contato.telefone },
             { rotulo: "E-mail", valor: contato.email },
             { rotulo: "Endereço", valor: contato.endereco },
           ].map((item) => (
-            <div key={item.rotulo}>
+            <div key={item.rotulo} className="min-w-0">
               <dt className="ds-tech">{item.rotulo}</dt>
-              <dd className="mt-1 text-[15px] text-shark">{item.valor}</dd>
+              <dd className="mt-1 break-words text-[15px] text-shark">{item.valor}</dd>
             </div>
           ))}
         </dl>

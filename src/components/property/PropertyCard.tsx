@@ -101,6 +101,8 @@ export default function PropertyCard({
                 fill
                 sizes={sizes}
                 priority={prioridade && i === 0}
+                // previa da captacao: blob:/data: nao passam pelo otimizador
+                unoptimized={foto.startsWith("blob:") || foto.startsWith("data:")}
                 className="object-cover"
               />
             </div>

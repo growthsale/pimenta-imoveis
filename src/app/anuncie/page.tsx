@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
-import EmBreve from "@/components/ui/EmBreve";
+import FormCaptacao from "@/components/captacao/FormCaptacao";
 
 export const metadata: Metadata = {
   title: "Anuncie seu imóvel | Pimenta Imóveis",
-  description: "Coloque seu imóvel na carteira da Pimenta Imóveis.",
+  description:
+    "Cadastre seu imóvel em quatro passos. O anúncio sai pronto no formato do catálogo e segue direto para um corretor da Pimenta.",
 };
 
 export default function AnunciePage() {
-  return (
-    <EmBreve
-      titulo="Anuncie seu imóvel"
-      descricao="O cadastro online entra na próxima etapa. Por enquanto, mande uma mensagem com o endereço e a metragem: a avaliação sai em até dois dias úteis, sem custo."
-    />
-  );
+  return <FormCaptacao />;
 }
